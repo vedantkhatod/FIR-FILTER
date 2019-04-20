@@ -1,0 +1,33 @@
+clc
+clear all
+close all
+N = 25;
+Wc = pi/2;
+a = (N-1)/2;
+for n = 0:N-1
+    if (n==a)
+        hd(n+1) = Wc/pi;
+    else
+        hd(n+1) = sin((n-a).*Wc)./(pi.*(n-a));
+    end
+end
+Wr = rectwin(N);
+hn1 = hd .* Wr';
+Wb = bartlett(N);
+hn2 = hd .* Wb';
+Wh = hamming(N);
+hn3 = hd .* Wh';
+
+[h1,w1]=freqz(hn1);
+[h2,w2]=freqz(hn2);
+[h3,w3]=freqz(hn3);
+
+plot(w1/pi,abs(h1));
+hold on
+plot(w2/pi,abs(h2));
+hold on
+plot(w3/pi,abs(h3));
+
+xlabel('w');
+ylabel('|H(w)|');
+title('FIR using Windowing method');
